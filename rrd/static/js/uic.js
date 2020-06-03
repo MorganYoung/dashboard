@@ -175,6 +175,7 @@ function create_team() {
 	$.post('/team/create', {
 		'name' : $("#name").val(),
 		'resume' : $("#resume").val(),
+		'robot' : $("#robot").val(),
 		'users' : $("#users").val()
 	}, function(json) {
 		if (json.msg.length > 0) {
@@ -188,6 +189,7 @@ function create_team() {
 function edit_team(tid) {
 	$.post('/team/'+tid+'/edit', {
 		'resume' : $("#resume").val(),
+		'robot' : $("#robot").val(),
 		'users' : $("#users").val(),
 		'id': tid
 	}, function(json) {

@@ -55,8 +55,8 @@ def team_create():
 
         name = request.form.get("name", "").strip()
         resume = request.form.get("resume", "").strip()
+        robot = request.form.get("robot", "")
         users = request.form.get("users", "")
-
         user_ids = users and users.split(",") or []
         user_ids = [int(x) for x in user_ids]
 
@@ -65,7 +65,7 @@ def team_create():
             return json.dumps(ret)
         
         try:
-            Team.create_team(name, resume, user_ids)
+            Team.create_team(name, resume, robot, user_ids)
         except Exception as e:
             ret['msg'] = str(e)
         return json.dumps(ret)
@@ -74,7 +74,7 @@ def team_create():
 def team_edit(team_id):
     if request.method == "GET":
         j = Team.get_team_users(team_id)
-        team = Team(j['id'], j['name'], j['resume'], j['creator'], j['creator_name'], [])
+        team = Team(j['id'], j['name'], j['resume'], j['robot'], j['creator'], j['creator_name'], [])
         team_user_ids = ",".join([str(x['id']) for x in j['users']])
 
         return render_template("team/edit.html", **locals())
@@ -84,12 +84,13 @@ def team_edit(team_id):
 
         resume = request.form.get("resume", "").strip()
         users = request.form.get("users", "")
+        robot = request.form.get("robot", "")
 
         user_ids = users and users.split(",") or []
         user_ids = [int(x) for x in user_ids]
 
         try:
-            Team.update_team(team_id, resume, user_ids)
+            Team.update_team(team_id, resume, robot, user_ids)
         except Exception as e:
             ret['msg'] = str(e)
         return json.dumps(ret)
